@@ -127,9 +127,9 @@ const App = () => {
       for (const list of Object.values(lists)) {
         latest.push(...list)
       }
-      setAllItems(latest, areas, lists)
+      setAllItems(latest)
     }
-  }, [currentTab])
+  }, [currentTab, areas, lists])
 
   return (
     <div className="bg-gray-100 p-4 min-h-screen">
