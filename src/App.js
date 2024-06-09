@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import 'tailwindcss/tailwind.css';
 import { useDrag, useDrop } from 'react-dnd';
 
 const ItemType = 'LIST_ITEM';
@@ -37,9 +38,7 @@ const TabContent = ({ items, moveItem }) => (
 
 const App = () => {
   const [input, setInput] = useState('');
-  const [lists, setLists] = useState({});
   const [allItems, setAllItems] = useState([]);
-  const [lowStock, setLowStock] = useState([]);
   const [currentTab, setCurrentTab] = useState('allItems');
   const [areas, setAreas] = useState([]);
 
@@ -79,7 +78,6 @@ const App = () => {
 
     newAreas.push('Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled')
 
-    setLists(newLists);
     setAreas(newAreas);
     setAllItems(allItems);
   };

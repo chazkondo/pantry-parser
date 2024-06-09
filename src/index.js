@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import 'tailwindcss/tailwind.css'; // Then import Tailwind CSS
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
