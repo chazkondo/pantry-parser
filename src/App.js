@@ -41,8 +41,8 @@ const App = () => {
   const [allItems, setAllItems] = useState([]);
   const [currentTab, setCurrentTab] = useState('allItems');
   const [lists, setLists] = useState({});
-  const areas = new Set(['allItems', 'Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled', 'Out of Stock'])
-  const defaultTabs = ['Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled', 'Out of Stock']
+  const areas = new Set(['allItems', 'Perishables', 'Spoiled', 'Nearly Spoiled', 'Out of Stock', 'Low Stock'])
+  const defaultTabs = ['Perishables', 'Spoiled', 'Nearly Spoiled', 'Out of Stock', 'Low Stock']
 
   const handleSubmit = (e) => {
     e.preventDefault();
