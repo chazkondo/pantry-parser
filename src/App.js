@@ -41,8 +41,8 @@ const App = () => {
   const [allItems, setAllItems] = useState([]);
   const [currentTab, setCurrentTab] = useState('allItems');
   const [lists, setLists] = useState({});
-  const areas = new Set(['allItems', 'Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled'])
-  const defaultTabs = ['Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled']
+  const areas = new Set(['allItems', 'Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled', 'Out of Stock'])
+  const defaultTabs = ['Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled', 'Out of Stock']
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,6 +67,7 @@ const App = () => {
           if (prefix.includes('l')) attributeArr.push('Low-Stock')
           if (prefix.includes('b')) attributeArr.push('Spoiled')
           if (prefix.includes('s')) attributeArr.push('Nearly-Spoiled')
+          if (prefix.includes('o')) attributeArr.push('Out-of-Stock')
           parsedList[i] += attributeArr.join(', ')
           parsedList[i] += ' ]'
         }
@@ -79,11 +80,12 @@ const App = () => {
           "low stock": prefix.includes('l') && itemName ? true : null,
           "spoiled": prefix.includes('b') && itemName ? true : null,
           "nearly spoiled" : prefix.includes('s') && itemName ? true : null,
+          "out of stock" : prefix.includes('o') && itemName ? true : null,
           "expiration date" : null
         }
       }
 
-      parsedList.sort((a, b) => b.spoiled - a.spoiled || b['low stock'] - a['low stock'] || b.perishable - a.perishable)
+      parsedList.sort((a, b) => b['out of stock'] - a['out of stock'] || b.spoiled - a.spoiled || b['low stock'] - a['low stock'] || b.perishable - a.perishable)
 
       allItems.push(...parsedList)
 
