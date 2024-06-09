@@ -115,6 +115,9 @@ const App = () => {
     }
     else if (currentTab === 'Nearly Spoiled') {
       return allItems.filter(item => item['nearly spoiled'])
+    } 
+    else if (currentTab === 'Out of Stock') {
+      return allItems.filter(item => item['out of stock'])
     } else {
       return lists[currentTab]
     }
