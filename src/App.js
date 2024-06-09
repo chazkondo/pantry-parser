@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import 'tailwindcss/tailwind.css';
 import { useDrag, useDrop } from 'react-dnd';
@@ -49,9 +49,6 @@ const App = () => {
     const listsArr = input.split('#');
     const newLists = {};
     const allItems = [];
-
-
-    console.log(listsArr, 'what is here now?')
 
     for (const list of listsArr) {
       if (!list.length) continue;
@@ -121,15 +118,15 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
-    if (areas.has(currentTab)) {
-      const latest = []
-      for (const list of Object.values(lists)) {
-        latest.push(...list)
-      }
-      setAllItems(latest)
+  const toggleToDefaultAreas = (tab) => {
+    const latest = []
+    for (const list of Object.values(lists)) {
+      latest.push(...list)
     }
-  }, [currentTab, areas, lists])
+    setAllItems(latest)
+
+    setCurrentTab(tab)
+  }
 
   return (
     <div className="bg-gray-100 p-4 min-h-screen">
@@ -157,7 +154,7 @@ const App = () => {
       </form>
       <div className="tabs flex mb-4">
         {allItems.length ? <button
-          onClick={() => setCurrentTab('allItems')}
+          onClick={() => toggleToDefaultAreas('allItems')}
           className={`px-4 py-2 mr-2 rounded ${currentTab === 'allItems' ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'}`}
         >
           All Items
@@ -174,7 +171,7 @@ const App = () => {
           {allItems.length ? defaultTabs.map((listName) => (
           <button
             key={listName}
-            onClick={() => setCurrentTab(listName)}
+            onClick={() => toggleToDefaultAreas(listName)}
             className={`px-4 py-2 mr-2 rounded ${currentTab === listName ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'}`}
           >
             {listName}
