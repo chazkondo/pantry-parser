@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import 'tailwindcss/tailwind.css';
 import { useDrag, useDrop } from 'react-dnd';
@@ -31,7 +31,7 @@ const ListItem = ({ item, index, moveItem }) => {
 const TabContent = ({ items, moveItem }) => (
   <div>
     {items.map((item, index) => (
-      <ListItem key={index} item={item} index={index} moveItem={moveItem} />
+      <ListItem key={item.key} item={item} index={index} moveItem={moveItem} />
     ))}
   </div>
 );
@@ -40,14 +40,16 @@ const App = () => {
   const [input, setInput] = useState('');
   const [allItems, setAllItems] = useState([]);
   const [currentTab, setCurrentTab] = useState('allItems');
-  const [areas, setAreas] = useState([]);
+  const [lists, setLists] = useState({});
+  const areas = new Set(['allItems', 'Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled'])
+  const defaultTabs = ['Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled']
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const listsArr = input.split('#');
     const newLists = {};
     const allItems = [];
-    const newAreas = []
+
 
     console.log(listsArr, 'what is here now?')
 
@@ -56,37 +58,50 @@ const App = () => {
       const parsedList = list.split('\n').filter(item => item);
 
       const title = parsedList.shift().slice(1).trim();
-      newLists[title] = parsedList;
 
-      newAreas.push(title)
+      for (let i = 0; i < parsedList.length; i++) {
+        const [prefix, itemName] = parsedList[i].split('.');
 
-      for (const foodItem of parsedList) {
-        
-        const [prefix, itemName] = foodItem.split('.');
-        allItems.push({
-          "name": foodItem, 
-          "area": title, 
+        if (itemName) {
+          const attributeArr = []
+
+          parsedList[i] = itemName + ' [ '
+          if (prefix.includes('c')) attributeArr.push('Perishable')
+          if (prefix.includes('l')) attributeArr.push('Low-Stock')
+          if (prefix.includes('b')) attributeArr.push('Spoiled')
+          if (prefix.includes('s')) attributeArr.push('Nearly-Spoiled')
+          parsedList[i] += attributeArr.join(', ')
+          parsedList[i] += ' ]'
+        }
+
+        parsedList[i] = {
+          "key": title + parsedList[i],
+          "name": parsedList[i], 
+          "area": title,
           "perishable": prefix.includes('c') && itemName ? true : null,
           "low stock": prefix.includes('l') && itemName ? true : null,
           "spoiled": prefix.includes('b') && itemName ? true : null,
           "nearly spoiled" : prefix.includes('s') && itemName ? true : null,
           "expiration date" : null
-        });
-
+        }
       }
+
+      parsedList.sort((a, b) => b.spoiled - a.spoiled || b['low stock'] - a['low stock'] || b.perishable - a.perishable)
+
+      allItems.push(...parsedList)
+
+      newLists[title] = parsedList;
     }
 
-    newAreas.push('Perishables', 'Low Stock', 'Spoiled', 'Nearly Spoiled')
-
-    setAreas(newAreas);
+    setLists(newLists)
     setAllItems(allItems);
   };
 
   const moveItem = (fromIndex, toIndex) => {
-    const updatedItem = [...allItems];
-    const [movedItem] = updatedItem.splice(fromIndex, 1);
-    updatedItem.splice(toIndex, 0, movedItem);
-    setAllItems(updatedItem);
+    const updatedItem = {...lists};
+    const [movedItem] = updatedItem[currentTab].splice(fromIndex, 1);
+    updatedItem[currentTab].splice(toIndex, 0, movedItem);
+    setLists(updatedItem);
   };
 
   const displayItems = (currentTab) => {
@@ -102,9 +117,20 @@ const App = () => {
     else if (currentTab === 'Nearly Spoiled') {
       return allItems.filter(item => item['nearly spoiled'])
     } else {
-      return allItems.filter(item => item.area === currentTab)
+      return lists[currentTab]
     }
   }
+
+  useEffect(() => {
+    if (areas.has(currentTab)) {
+      const latest = []
+      for (const list of Object.values(lists)) {
+        console.log(list, 'do i get lists?')
+        latest.push(...list)
+      }
+      setAllItems(latest)
+    }
+  }, [currentTab])
 
   return (
     <div className="bg-gray-100 p-4 min-h-screen">
@@ -137,7 +163,7 @@ const App = () => {
         >
           All Items
         </button> : null}
-        {areas.map((listName) => (
+        {allItems.length ? Object.keys(lists).map((listName) => (
           <button
             key={listName}
             onClick={() => setCurrentTab(listName)}
@@ -145,13 +171,22 @@ const App = () => {
           >
             {listName}
           </button>
-        ))}
+        )) : null}
+          {allItems.length ? defaultTabs.map((listName) => (
+          <button
+            key={listName}
+            onClick={() => setCurrentTab(listName)}
+            className={`px-4 py-2 mr-2 rounded ${currentTab === listName ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'}`}
+          >
+            {listName}
+          </button>
+        )) : null}
       </div>
       <div className="tab-content mt-4">
         {currentTab === 'allItems' ? (
-          <TabContent items={allItems} moveItem={moveItem} />
+          <TabContent items={allItems} moveItem={() => {}} />
         ) : (
-          <TabContent items={displayItems(currentTab)} moveItem={() => {}} />
+          <TabContent items={displayItems(currentTab)} moveItem={!areas.has(currentTab) ? moveItem : () => {}} />
         )}
       </div>
     </div>
