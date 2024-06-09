@@ -135,7 +135,7 @@ const App = () => {
 
   return (
     <div className="bg-gray-100 p-4 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">List Household Food Items</h1>
+      <a href="https://github.com/chazkondo/pantry-parser"><h1 title="Instructions" className="text-2xl font-bold mb-4 hover">List Household Food Items</h1></a>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md mb-4">
         <div className="mb-4">
           <label
