@@ -22,7 +22,7 @@ const ListItem = ({ item, index, moveItem }) => {
   });
 
   return (
-    <div ref={(node) => ref(drop(node))} className="p-2 border border-gray-300 rounded bg-white shadow-sm mb-2">
+    <div ref={(node) => ref(drop(node))} className="p-2 border border-gray-300 rounded bg-white shadow-sm mb-2" title={item.area}>
       {item.name}
     </div>
   );
