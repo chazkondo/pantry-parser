@@ -21,5 +21,9 @@
 
 Note: This is subject to change. Letters must be lower case. 
 
+<img width="987" alt="Screenshot 2024-06-09 at 8 18 21 AM" src="https://github.com/chazkondo/pantry-parser/assets/38027158/998d4473-db64-47ba-848f-be5eb17bf2e1">
 
+<img width="973" alt="Screenshot 2024-06-09 at 8 18 48 AM" src="https://github.com/chazkondo/pantry-parser/assets/38027158/678bb04f-4bdc-455c-8a38-a9f7289e58b5">
+
+<img width="946" alt="Screenshot 2024-06-09 at 8 19 02 AM" src="https://github.com/chazkondo/pantry-parser/assets/38027158/8fabd614-5abb-432c-adcc-efb4446de311">
 
