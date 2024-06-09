@@ -18,6 +18,7 @@
 2. Lower case S -> 's' -> Spoiling
 3. Lower case B -> 'b' -> Bad -> Spoiled
 4. Lower case L -> 'l' -> Low Stock
+4. Lower case O -> 'o' -> Out of Stock
 
 Note: This is subject to change. Letters must be lower case. 
 
