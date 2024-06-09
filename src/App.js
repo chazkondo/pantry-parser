@@ -125,10 +125,9 @@ const App = () => {
     if (areas.has(currentTab)) {
       const latest = []
       for (const list of Object.values(lists)) {
-        console.log(list, 'do i get lists?')
         latest.push(...list)
       }
-      setAllItems(latest)
+      setAllItems(latest, areas, lists)
     }
   }, [currentTab])
 
